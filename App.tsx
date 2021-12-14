@@ -5,16 +5,17 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import SettingsProvider from '@components/SettingsProvider/SettingsProvider';
 import BaseLayout from './src/layout/BaseLayout/BaseLayout';
+import {SafeAreaProvider} from 'react-native-safe-area-view';
 
 const App = () => {
   return (
-    // <SafeAreaProvider>
-    <NavigationContainer>
-      <SettingsProvider>
-        <BaseLayout />
-      </SettingsProvider>
-    </NavigationContainer>
-    // </SafeAreaProvider>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <SettingsProvider>
+          <BaseLayout />
+        </SettingsProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 

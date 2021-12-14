@@ -17,6 +17,13 @@ const router = [
     component: require('src/page/Home/Home').default,
   },
   {
+    name: 'ReadRss',
+    options: {
+      title: 'RSS',
+    },
+    component: require('src/page/ReadRss/ReadRss').default,
+  },
+  {
     name: 'Setting',
     options: {
       title: '设置',
@@ -41,6 +48,7 @@ const BaseLayout = () => {
       {/*</Stack.Navigator>*/}
       <Tab.Navigator
         initialRouteName="Home"
+        // tabBar={() => null}
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             let iconName = 'compass';
@@ -57,14 +65,15 @@ const BaseLayout = () => {
                 {...props}
                 style={({pressed}) => ({
                   transform: pressed ? [{scale: 0.9}] : [{scale: 1}],
+                  backgroundColor: appSettings.colors.background,
                   flex: 1,
                 })}
               />
             );
           },
           tabBarActiveTintColor: appSettings.colors.primary,
-          tabBarInactiveTintColor: 'gray',
-          tabBarActiveBackgroundColor: appSettings.colors.background,
+          tabBarInactiveTintColor: appSettings.colors.text,
+          tabBarStyle: {backgroundColor: appSettings.colors.background},
         })}>
         {router.map((routerItem, routerIdx) => (
           <Tab.Screen

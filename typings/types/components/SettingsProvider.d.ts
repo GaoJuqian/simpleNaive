@@ -1,6 +1,6 @@
 declare namespace AppSettings {
   /** app配置 */
-  interface ISettings {
+  export interface ISettings {
     /** theme 系统主题 light or dark */
     theme: string;
     /**
@@ -16,5 +16,11 @@ declare namespace AppSettings {
       text: string;
       background: string;
     };
+    insets: {
+      top: number;
+      right: number;
+      bottom: number;
+      left: number;
+    } | null;
   }
 }

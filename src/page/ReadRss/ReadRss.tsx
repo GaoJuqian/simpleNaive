@@ -1,11 +1,14 @@
-import React, {FC, useLayoutEffect} from 'react';
+import React, {FC, useEffect, useLayoutEffect} from 'react';
 import {StatusBar, Text, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
+import {useNavigation} from '@react-navigation/native';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
+import RssModels from '../../request/models/rssModels';
 
-const Home: FC = () => {
+const rssModels = new RssModels();
+const ReadRss: FC = props => {
   const navigation = useNavigation();
+
   const appSettings = useAppSettings();
 
   useLayoutEffect(() => {
@@ -13,13 +16,24 @@ const Home: FC = () => {
       headerShown: false,
     });
   }, [navigation]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const resp1 = await rssModels.getTest();
+        console.log(resp1);
+      } catch (e) {
+        console.log('err', e);
+      }
+    })();
+  }, []);
+
   return (
     <View
       style={[
         styles.container,
         {
           paddingTop: appSettings.insets?.top,
-          paddingBottom: appSettings.insets?.bottom,
           backgroundColor: appSettings.colors.background,
         },
       ]}>
@@ -28,18 +42,9 @@ const Home: FC = () => {
         translucent={true}
         backgroundColor="rgba(0,0,0,0)"
       />
-      <Text>Home Screen1</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
+      <Text>Setting Screen</Text>
     </View>
   );
 };
 
-export default Home;
+export default ReadRss;

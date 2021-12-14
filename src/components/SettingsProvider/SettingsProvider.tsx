@@ -1,13 +1,15 @@
 import React, {FC, useContext, useLayoutEffect, useReducer} from 'react';
 import {useColorScheme} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const settings: AppSettings.ISettings = {
   theme: 'light',
   colors: {
-    primary: '#cd7a89',
-    text: '#f7e9eb',
-    background: '',
+    primary: '#f2cac9', // #e899b0
+    text: 'rgba(247,233,235, 1)',
+    background: '#3d3b4f', // 玄色#622a1d // 玄青#3d3b4f
   },
+  insets: null,
 };
 
 /***
@@ -15,13 +17,42 @@ const settings: AppSettings.ISettings = {
  * @param state settings
  * @param action type: 设置key, payload: value
  */
+type actionType = keyof AppSettings.ISettings;
 function reducer(
   state: AppSettings.ISettings,
-  action: {type: keyof AppSettings.ISettings; payload: unknown},
+  action: {
+    type: actionType;
+    payload: AppSettings.ISettings[actionType];
+  },
 ): AppSettings.ISettings {
   switch (action.type) {
     case 'theme':
-      return {...state, theme: action.payload as typeof action.type};
+      if (action.payload === 'light') {
+        return {
+          ...state,
+          theme: String(action.payload),
+          // colors: {
+          //   primary: 'rgba( 205,122,137, 1)',
+          //   text: '#243f66',
+          //   background: 'rgba(247,233,235, 1)',
+          // },
+        };
+      } else {
+        return {
+          ...state,
+          theme: String(action.payload),
+          colors: {
+            primary: 'rgba(247,233,235, 1)',
+            text: '#243f66',
+            background: '#3d3b4f',
+          },
+        };
+      }
+    case 'insets':
+      return {
+        ...state,
+        insets: action.payload as AppSettings.ISettings['insets'],
+      };
     default:
       throw new Error();
   }
@@ -36,11 +67,22 @@ const SettingsProvider: FC = ({children}) => {
     settings,
   );
 
+  //****************************************************************************
+
   // 获取系统主题
   const systemTheme = useColorScheme();
   useLayoutEffect(() => {
-    settingsDispatch({type: 'theme', payload: systemTheme});
+    console.log(systemTheme);
+    settingsDispatch({type: 'theme', payload: systemTheme as string});
   }, [systemTheme]);
+
+  // 安全区 paddingTop: insets.top
+  const insets = useSafeAreaInsets();
+  useLayoutEffect(() => {
+    settingsDispatch({type: 'insets', payload: insets});
+  }, [insets]);
+
+  //****************************************************************************
 
   return (
     <AppSettings.Provider value={settingsState}>
