@@ -28,16 +28,11 @@ const Home: FC = () => {
         translucent={true}
         backgroundColor="rgba(0,0,0,0)"
       />
-      <Text>Home Screen1</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
-      <Text>Home Screen</Text>
+      <Text style={{color: '#fff'}}>
+        Home Screen1 Home Screen1Home Screen1 Home Screen1 Home Screen1Home
+        Screen1 Home Screen1 Home Screen1 v Home Screen1 Home Screen1 Home
+        Screen1 Home Screen1 Home Screen1 Home Screen1
+      </Text>
     </View>
   );
 };

@@ -9,22 +9,38 @@ const responseHandler = (response: Response) => {
   const {status} = response;
   // http status 200
   if (status === 200) {
-    return response.json();
+    if (response.headers.get('content-type')?.includes('application/json')) {
+      return response.json();
+    } else {
+      return response.text();
+    }
   } else {
     Alert.alert('http != 200');
   }
 };
 
 // http json响应
-const responseJsonHandler = (responseJson: {
-  code?: string | number;
-  data?: Record<string, any>;
-}) => {
+const responseJsonHandler = (
+  responseJson:
+    | {
+        code?: string | number;
+        data?: Record<string, any>;
+      }
+    | string,
+) => {
   // http json code 200
-  if (responseJson?.code === 200) {
-    return responseJson;
+  if (typeof responseJson !== 'string') {
+    if (responseJson?.code === 200) {
+      return responseJson;
+    } else {
+      Alert.alert('http json code != 200');
+    }
   } else {
-    Alert.alert('http json code != 200');
+    // 如果是xml
+    if (responseJson.startsWith('<?xml')) {
+      return responseJson;
+    }
+    Alert.alert('request is bad');
   }
 };
 

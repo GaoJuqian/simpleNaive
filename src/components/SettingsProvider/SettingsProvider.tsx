@@ -2,12 +2,14 @@ import React, {FC, useContext, useLayoutEffect, useReducer} from 'react';
 import {useColorScheme} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
+// 粉 #e899b0
+// 玄色#622a1d // 玄青#3d3b4f // 紫兰#243f66
 const settings: AppSettings.ISettings = {
   theme: 'light',
   colors: {
-    primary: '#f2cac9', // #e899b0
-    text: 'rgba(247,233,235, 1)',
-    background: '#3d3b4f', // 玄色#622a1d // 玄青#3d3b4f
+    primary: '#cd7a89',
+    text: '#FFFAFA',
+    background: '#3d3b4f',
   },
   insets: null,
 };
@@ -32,9 +34,9 @@ function reducer(
           ...state,
           theme: String(action.payload),
           // colors: {
-          //   primary: 'rgba( 205,122,137, 1)',
-          //   text: '#243f66',
-          //   background: 'rgba(247,233,235, 1)',
+          //   primary: '#cd7a89',
+          //   text: '#3d3b4f',
+          //   background: '#FFFAFA',
           // },
         };
       } else {
@@ -42,8 +44,8 @@ function reducer(
           ...state,
           theme: String(action.payload),
           colors: {
-            primary: 'rgba(247,233,235, 1)',
-            text: '#243f66',
+            primary: '#cd7a89',
+            text: '#FFFAFA',
             background: '#3d3b4f',
           },
         };
