@@ -2,14 +2,15 @@ import React, {FC, useContext, useLayoutEffect, useReducer} from 'react';
 import {useColorScheme} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-// 粉 #e899b0
+// 粉 #e899b0 浅色粉#FFFAFA
 // 玄色#622a1d // 玄青#3d3b4f // 紫兰#243f66
 const settings: AppSettings.ISettings = {
   theme: 'light',
   colors: {
     primary: '#cd7a89',
-    text: '#FFFAFA',
-    background: '#3d3b4f',
+    text: '#3d3b4f',
+    background: '#f4f4f6',
+    card: '#ffffff',
   },
   insets: null,
 };
@@ -33,11 +34,12 @@ function reducer(
         return {
           ...state,
           theme: String(action.payload),
-          // colors: {
-          //   primary: '#cd7a89',
-          //   text: '#3d3b4f',
-          //   background: '#FFFAFA',
-          // },
+          colors: {
+            primary: '#cd7a89',
+            text: '#f4f4f6',
+            background: '#000',
+            card: '#1c1c1c',
+          },
         };
       } else {
         return {
@@ -45,8 +47,9 @@ function reducer(
           theme: String(action.payload),
           colors: {
             primary: '#cd7a89',
-            text: '#FFFAFA',
-            background: '#3d3b4f',
+            text: '#f4f4f6',
+            background: '#000',
+            card: '#1c1c1c',
           },
         };
       }
@@ -64,10 +67,7 @@ function reducer(
 const AppSettings = React.createContext<AppSettings.ISettings>(settings);
 
 const SettingsProvider: FC = ({children}) => {
-  const [settingsState, settingsDispatch] = useReducer<typeof reducer>(
-    reducer,
-    settings,
-  );
+  const [settingsState, settingsDispatch] = useReducer<typeof reducer>(reducer, settings);
 
   //****************************************************************************
 
@@ -86,11 +86,7 @@ const SettingsProvider: FC = ({children}) => {
 
   //****************************************************************************
 
-  return (
-    <AppSettings.Provider value={settingsState}>
-      {children}
-    </AppSettings.Provider>
-  );
+  return <AppSettings.Provider value={settingsState}>{children}</AppSettings.Provider>;
 };
 
 export default SettingsProvider;

@@ -15,7 +15,8 @@ const responseHandler = (response: Response) => {
       return response.text();
     }
   } else {
-    Alert.alert('http != 200');
+    // Alert.alert(`HTTP STATUS ${status}`);
+    return Promise.reject(`HTTP STATUS ${status}`);
   }
 };
 
@@ -63,7 +64,7 @@ export default class Http {
       .catch(error => {
         // 只有网络错误，或者无法连接时，fetch才会报错
         console.log('fetchGet', error);
-        Alert.alert(error.message);
+        Alert.alert(error.message || error || 'wuuuuuuuu~');
       });
   }
 
@@ -101,7 +102,7 @@ export default class Http {
       .catch(error => {
         // 只有网络错误，或者无法连接时，fetch才会报错
         console.log('fetchGet', error);
-        Alert.alert(error.message);
+        Alert.alert(error.message || error || 'wuuuuuuuu~');
       });
   }
 }

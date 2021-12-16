@@ -2,6 +2,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {Pressable} from 'react-native';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 
@@ -24,11 +27,11 @@ const router = [
     component: require('src/page/ReadRss/ReadRss').default,
   },
   {
-    name: 'Setting',
+    name: 'AppControl',
     options: {
-      title: '设置',
+      title: '控制台',
     },
-    component: require('src/page/Setting/Setting').default,
+    component: require('src/page/AppControl/AppControl').default,
   },
 ];
 const BaseLayout = () => {
@@ -51,11 +54,33 @@ const BaseLayout = () => {
         // tabBar={() => null}
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
-            let iconName = 'compass';
+            const iconName = 'compass';
             if (route.name === 'Home') {
-              iconName = focused ? 'laughing' : 'slightly-smile';
-            } else if (route.name === 'Setting') {
-              iconName = focused ? 'spinner-cog' : 'player-settings';
+              return (
+                <Fontisto
+                  name={focused ? 'laughing' : 'slightly-smile'}
+                  size={size}
+                  color={color}
+                />
+              );
+            }
+            if (route.name === 'AppControl') {
+              return (
+                <Ionicons
+                  name={focused ? 'ios-cube' : 'ios-cube-outline'}
+                  size={size}
+                  color={color}
+                />
+              );
+            }
+            if (route.name === 'ReadRss') {
+              return (
+                <MaterialCommunityIcons
+                  name={focused ? 'rss-box' : 'rss'}
+                  size={size}
+                  color={color}
+                />
+              );
             }
             return <Fontisto name={iconName} size={size} color={color} />;
           },
