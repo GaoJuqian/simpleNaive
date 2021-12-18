@@ -1,12 +1,15 @@
-import React, {FC, useLayoutEffect} from 'react';
+import React, {FC, useLayoutEffect, useState} from 'react';
 import {ActivityIndicator, StatusBar, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import ReadRssList from '@components/ReadRssComponents/ReadRssList/ReadRssList';
 
 const Tab = createMaterialTopTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const mockrss = [
   {
@@ -14,31 +17,15 @@ const mockrss = [
     url: 'https://www.ruanyifeng.com/blog/atom.xml',
   },
   {name: 'ASDFGHJKL', url: 'https://coolshell.cn/feed'},
-  {name: 'gaojuqian', url: 'https://www.gaojuqian.com/index.php/feed/12312'},
+  {name: 'gaojuqian', url: 'https://www.gaojuqian.com/index.php/feed/'},
   {name: 'Movie-s', url: 'https://www.1895m.com/feed/'},
 ];
 
-const ReadRss: FC = props => {
-  const navigation = useNavigation();
-
+const TabList: FC = () => {
   const appSettings = useAppSettings();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, [navigation]);
-
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          paddingTop: appSettings.insets?.top,
-          backgroundColor: appSettings.colors.background,
-        },
-      ]}>
-      <StatusBar barStyle="default" translucent={true} backgroundColor="rgba(0,0,0,0)" />
+    <>
       <Tab.Navigator
         screenOptions={({route}) => ({
           // 活动
@@ -83,6 +70,45 @@ const ReadRss: FC = props => {
           />
         ))}
       </Tab.Navigator>
+    </>
+  );
+};
+
+export const stackRouter = [
+  {name: 'TabList', options: {headerShown: false}, component: TabList},
+  {
+    name: 'TabListDetails',
+    options: {},
+    component: require('src/components/ReadRssComponents/ReadRssDetails/ReadRssDetails').default,
+  },
+];
+export const ReadRssCtx = React.createContext<any>({});
+
+const ReadRss: FC = () => {
+  const navigation = useNavigation();
+  const [ReadRssCtxValue, setReadRssCtxValue] = useState({navigation: navigation});
+  const appSettings = useAppSettings();
+
+  useLayoutEffect(() => {
+    setReadRssCtxValue({navigation: navigation});
+  }, [navigation]);
+
+  return (
+    <View
+      style={[styles.container, {paddingTop: appSettings.insets?.top, backgroundColor: appSettings.colors.background}]}>
+      <StatusBar barStyle="default" translucent={true} backgroundColor="rgba(0,0,0,0)" />
+      <ReadRssCtx.Provider value={ReadRssCtxValue}>
+        <Stack.Navigator>
+          {stackRouter.map((routerItem, routerIdx) => (
+            <Stack.Screen
+              name={routerItem.name}
+              component={routerItem.component}
+              options={routerItem.options}
+              key={routerIdx}
+            />
+          ))}
+        </Stack.Navigator>
+      </ReadRssCtx.Provider>
     </View>
   );
 };

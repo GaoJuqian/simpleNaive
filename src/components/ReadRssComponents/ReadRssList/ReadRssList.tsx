@@ -1,10 +1,11 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Image, Pressable, SafeAreaView, Text, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 
 import RssModels from 'src/request/models/rssModels';
 import moment from 'moment';
+import {ReadRssCtx} from 'src/page/ReadRss/ReadRss';
 
 const rssModels = new RssModels();
 const noListImg = require('src/assets/commom/noList.png');
@@ -23,6 +24,7 @@ const ReadRssList = (props: IProps) => {
   const appSettings = useAppSettings();
   const [rssData, setRssData] = useState<any>(undefined);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const uReadRssCtx = useContext(ReadRssCtx);
 
   /***
    * 获取rss
@@ -58,14 +60,21 @@ const ReadRssList = (props: IProps) => {
     return str;
   };
 
+  // 点击单个跳转
+  const clickItem = useCallback(
+    (index: number) => {
+      const data = rssData.items[index];
+      const {link} = data;
+      console.log('link', link);
+      if (link) {
+        uReadRssCtx.navigation.navigate('TabListDetails', {url: link});
+      }
+    },
+    [uReadRssCtx, rssData],
+  );
+
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: appSettings.colors.background,
-        },
-      ]}>
+    <View style={[styles.container, {backgroundColor: appSettings.colors.background}]}>
       {rssData !== undefined ? (
         <SafeAreaView style={styles.rssListBox}>
           <FlatList
@@ -77,9 +86,9 @@ const ReadRssList = (props: IProps) => {
             // 在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号。
             refreshing={isRefreshing}
             data={rssData.items}
-            renderItem={({item}) => (
+            renderItem={({item, index}) => (
               <Pressable
-                onPress={() => null}
+                onPress={() => clickItem(index)}
                 style={({pressed}) => ({
                   opacity: pressed ? 0.6 : 1,
                 })}>

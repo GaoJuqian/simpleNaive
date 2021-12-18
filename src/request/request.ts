@@ -30,6 +30,7 @@ const responseJsonHandler = (
     | string,
 ) => {
   // http json code 200
+  // console.log(responseJson);
   if (typeof responseJson !== 'string') {
     if (responseJson?.code === 200) {
       return responseJson;
@@ -39,6 +40,10 @@ const responseJsonHandler = (
   } else {
     // 如果是xml
     if (responseJson.startsWith('<?xml')) {
+      return responseJson;
+    }
+    // 如果是html
+    if (responseJson.includes('<!DOCTYPE')) {
       return responseJson;
     }
     Alert.alert('request is bad');
@@ -69,8 +74,7 @@ export default class Http {
   }
 
   fetchPost(url: string, options: optionsType = {postType: 'json'}) {
-    const body =
-      options.postType === 'form' ? options.body : JSON.stringify(options.body);
+    const body = options.postType === 'form' ? options.body : JSON.stringify(options.body);
 
     const headers =
       options.postType === 'form'

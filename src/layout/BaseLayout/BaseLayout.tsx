@@ -23,6 +23,7 @@ const router = [
     name: 'ReadRss',
     options: {
       title: 'RSS',
+      headerShown: false,
     },
     component: require('src/page/ReadRss/ReadRss').default,
   },
@@ -56,31 +57,13 @@ const BaseLayout = () => {
           tabBarIcon: ({focused, color, size}) => {
             const iconName = 'compass';
             if (route.name === 'Home') {
-              return (
-                <Fontisto
-                  name={focused ? 'laughing' : 'slightly-smile'}
-                  size={size}
-                  color={color}
-                />
-              );
+              return <Fontisto name={focused ? 'laughing' : 'slightly-smile'} size={size} color={color} />;
             }
             if (route.name === 'AppControl') {
-              return (
-                <Ionicons
-                  name={focused ? 'ios-cube' : 'ios-cube-outline'}
-                  size={size}
-                  color={color}
-                />
-              );
+              return <Ionicons name={focused ? 'ios-cube' : 'ios-cube-outline'} size={size} color={color} />;
             }
             if (route.name === 'ReadRss') {
-              return (
-                <MaterialCommunityIcons
-                  name={focused ? 'rss-box' : 'rss'}
-                  size={size}
-                  color={color}
-                />
-              );
+              return <MaterialCommunityIcons name={focused ? 'rss-box' : 'rss'} size={size} color={color} />;
             }
             return <Fontisto name={iconName} size={size} color={color} />;
           },
