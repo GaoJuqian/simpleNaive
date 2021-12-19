@@ -19,7 +19,7 @@ const Setting: FC = props => {
   return (
     <View style={[styles.container, {paddingTop: insets.top}]}>
       <StatusBar
-        barStyle="default"
+        barStyle={appSettings.theme === 'light' ? 'dark-content' : 'light-content'}
         translucent={true}
         backgroundColor="rgba(0,0,0,0)"
       />

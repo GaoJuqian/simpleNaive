@@ -1,9 +1,10 @@
 import React, {useLayoutEffect, useState} from 'react';
-import {useWindowDimensions, View} from 'react-native';
+import {ActivityIndicator, useWindowDimensions, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import {WebView} from 'react-native-webview';
 import RssModels from 'src/request/models/rssModels';
+import AppHeader from '@components/commom/AppHeader/AppHeader';
 
 const rssModels = new RssModels();
 
@@ -12,6 +13,7 @@ interface IProps {
   route: {
     params: {
       url: string;
+      title: string;
     };
   };
 }
@@ -42,7 +44,30 @@ const ReadRssList = (props: IProps) => {
           backgroundColor: appSettings.colors.background,
         },
       ]}>
-      <WebView source={{uri: source}} />
+      <AppHeader title={props.route.params.title} />
+      <WebView
+        source={{uri: source}}
+        androidLayerType={'hardware'}
+        onLoadStart={syntheticEvent => {
+          const {nativeEvent} = syntheticEvent;
+        }}
+        onLoad={syntheticEvent => {
+          const {nativeEvent} = syntheticEvent;
+        }}
+        onError={syntheticEvent => {
+          const {nativeEvent} = syntheticEvent;
+          // Alert.alert(`WebView error: ${nativeEvent}`);
+          console.warn(`WebView error: ${nativeEvent}`);
+        }}
+        // loading provide
+        startInLoadingState={true}
+        renderLoading={() => (
+          <ActivityIndicator style={{height: '100%', width: '100%'}} size="large" color={appSettings.colors.primary} />
+        )}
+        // 用于控制Web内容是否缩放以适应视图，并使用户能够更改缩放。默认值为true。
+        scalesPageToFit={false}
+        style={{backgroundColor: appSettings.colors.background}}
+      />
       {/*{source && <RenderHtml contentWidth={width} source={source} />}*/}
     </View>
   );

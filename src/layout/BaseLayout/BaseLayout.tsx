@@ -31,39 +31,49 @@ const router = [
     name: 'AppControl',
     options: {
       title: '控制台',
+      headerShown: false,
     },
     component: require('src/page/AppControl/AppControl').default,
   },
 ];
-const BaseLayout = () => {
-  const appSettings = useAppSettings();
 
+const BaseTab = () => {
+  const appSettings = useAppSettings();
   return (
     <>
-      {/*<Stack.Navigator screenOptions={headerBaseOpt} initialRouteName="Home">*/}
-      {/*  {router.map((routerItem, routerIdx) => (*/}
-      {/*    <Stack.Screen*/}
-      {/*      name={routerItem.name}*/}
-      {/*      component={routerItem.component}*/}
-      {/*      options={routerItem.options}*/}
-      {/*      key={routerIdx}*/}
-      {/*    />*/}
-      {/*  ))}*/}
-      {/*</Stack.Navigator>*/}
       <Tab.Navigator
         initialRouteName="Home"
         // tabBar={() => null}
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             const iconName = 'compass';
+            // TODO 优化
             if (route.name === 'Home') {
-              return <Fontisto name={focused ? 'laughing' : 'slightly-smile'} size={size} color={color} />;
+              return (
+                <Fontisto
+                  name={focused ? 'laughing' : 'slightly-smile'}
+                  size={size}
+                  color={color}
+                />
+              );
             }
             if (route.name === 'AppControl') {
-              return <Ionicons name={focused ? 'ios-cube' : 'ios-cube-outline'} size={size} color={color} />;
+              return (
+                <Ionicons
+                  name={focused ? 'ios-cube' : 'ios-cube-outline'}
+                  size={size}
+                  color={color}
+                />
+              );
             }
             if (route.name === 'ReadRss') {
-              return <MaterialCommunityIcons name={focused ? 'rss-box' : 'rss'} size={size} color={color} />;
+              return (
+                <MaterialCommunityIcons
+                  name={focused ? 'rss-box' : 'rss'}
+                  size={size}
+                  color={color}
+                />
+              );
             }
             return <Fontisto name={iconName} size={size} color={color} />;
           },
@@ -93,6 +103,44 @@ const BaseLayout = () => {
         ))}
       </Tab.Navigator>
     </>
+  );
+};
+
+// 单页跳转
+const BaseLayoutRouter = [
+  {name: 'AppBase', options: {headerShown: false}, component: BaseTab},
+  {
+    name: 'TabListDetails',
+    options: {headerShown: false},
+    component: require('src/components/ReadRssComponents/ReadRssDetails/ReadRssDetails').default,
+  },
+  {
+    name: 'ReadRssSetting',
+    options: {headerShown: false},
+    component: require('src/components/ReadRssComponents/ReadRssSetting/ReadRssSetting').default,
+  },
+];
+// export const BaseLayoutCtx = React.createContext<any>({});
+const BaseLayout = () => {
+  // const navigation = useNavigation();
+  // const [BaseLayoutCtxValue, setBaseLayoutCtxValue] = useState({navigation: navigation});
+  // useLayoutEffect(() => {
+  //   setBaseLayoutCtxValue({navigation: navigation});
+  // }, [navigation]);
+
+  return (
+    // <BaseLayoutCtx.Provider value={BaseLayoutCtxValue}>
+    <Stack.Navigator>
+      {BaseLayoutRouter.map((routerItem, routerIdx) => (
+        <Stack.Screen
+          name={routerItem.name}
+          component={routerItem.component}
+          options={routerItem.options}
+          key={routerIdx}
+        />
+      ))}
+    </Stack.Navigator>
+    // </BaseLayoutCtx.Provider>
   );
 };
 

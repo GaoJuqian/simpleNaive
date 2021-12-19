@@ -1,18 +1,45 @@
-import React, {FC, useLayoutEffect} from 'react';
+import React, {FC} from 'react';
 import {Pressable, StatusBar, Text, View} from 'react-native';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
+import Feather from 'react-native-vector-icons/Feather';
 
-const AppControl: FC = props => {
+interface IControlComponent {
+  controlListIdx: number;
+  appSettings: AppSettings.ISettings;
+  navigation: any;
+}
+const controlList = [
+  {
+    name: 'Rss',
+    component: ({controlListIdx, appSettings, navigation}: IControlComponent) => {
+      return (
+        <Pressable
+          style={({pressed}) => [
+            styles.controlListItem,
+            {
+              backgroundColor: pressed ? 'rgba(255,255,255, .2)' : appSettings.colors.card,
+            },
+          ]}
+          onPress={() => {
+            navigation.navigate('ReadRssSetting');
+          }}
+          key={controlListIdx}>
+          <Text style={[styles.controlListItemText, {color: appSettings.colors.text}]}>
+            Rss配置
+          </Text>
+          <Feather name={'chevron-right'} size={16} color={appSettings.colors.text} />
+        </Pressable>
+      );
+    },
+  },
+];
+
+const AppControl: FC = () => {
   const navigation = useNavigation();
   const appSettings = useAppSettings();
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, [navigation]);
-  console.log(props);
+
   return (
     <View
       style={[
@@ -23,13 +50,16 @@ const AppControl: FC = props => {
         },
       ]}>
       <StatusBar
-        barStyle="default"
+        barStyle={appSettings.theme === 'light' ? 'dark-content' : 'light-content'}
         translucent={true}
         backgroundColor="rgba(0,0,0,0)"
       />
-      <Pressable onPress={() => null}>
-        <Text>I'm pressable!</Text>
-      </Pressable>
+
+      <View style={[styles.controlList]}>
+        {controlList.map((controlListItem, controlListIdx) =>
+          controlListItem.component({controlListIdx, appSettings, navigation}),
+        )}
+      </View>
     </View>
   );
 };

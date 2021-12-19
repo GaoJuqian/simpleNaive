@@ -1,7 +1,6 @@
-import React, {FC, useLayoutEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {ActivityIndicator, StatusBar, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
-import {useNavigation} from '@react-navigation/native';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -76,39 +75,43 @@ const TabList: FC = () => {
 
 export const stackRouter = [
   {name: 'TabList', options: {headerShown: false}, component: TabList},
-  {
-    name: 'TabListDetails',
-    options: {},
-    component: require('src/components/ReadRssComponents/ReadRssDetails/ReadRssDetails').default,
-  },
+  // {
+  //   name: 'TabListDetails',
+  //   options: {headerShown: false},
+  //   component: require('src/components/ReadRssComponents/ReadRssDetails/ReadRssDetails').default,
+  // },
 ];
 export const ReadRssCtx = React.createContext<any>({});
 
 const ReadRss: FC = () => {
-  const navigation = useNavigation();
-  const [ReadRssCtxValue, setReadRssCtxValue] = useState({navigation: navigation});
+  // const navigation = useNavigation();
+  // const [ReadRssCtxValue, setReadRssCtxValue] = useState({});
   const appSettings = useAppSettings();
 
-  useLayoutEffect(() => {
-    setReadRssCtxValue({navigation: navigation});
-  }, [navigation]);
+  // useLayoutEffect(() => {
+  //   setReadRssCtxValue({});
+  // }, [navigation]);
 
   return (
     <View
       style={[styles.container, {paddingTop: appSettings.insets?.top, backgroundColor: appSettings.colors.background}]}>
-      <StatusBar barStyle="default" translucent={true} backgroundColor="rgba(0,0,0,0)" />
-      <ReadRssCtx.Provider value={ReadRssCtxValue}>
-        <Stack.Navigator>
-          {stackRouter.map((routerItem, routerIdx) => (
-            <Stack.Screen
-              name={routerItem.name}
-              component={routerItem.component}
-              options={routerItem.options}
-              key={routerIdx}
-            />
-          ))}
-        </Stack.Navigator>
-      </ReadRssCtx.Provider>
+      <StatusBar
+        barStyle={appSettings.theme === 'light' ? 'dark-content' : 'light-content'}
+        translucent={true}
+        backgroundColor="rgba(0,0,0,0)"
+      />
+      {/*<ReadRssCtx.Provider value={ReadRssCtxValue}>*/}
+      <Stack.Navigator>
+        {stackRouter.map((routerItem, routerIdx) => (
+          <Stack.Screen
+            name={routerItem.name}
+            component={routerItem.component}
+            options={routerItem.options}
+            key={routerIdx}
+          />
+        ))}
+      </Stack.Navigator>
+      {/*</ReadRssCtx.Provider>*/}
     </View>
   );
 };

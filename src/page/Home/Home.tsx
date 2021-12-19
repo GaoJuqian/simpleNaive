@@ -24,14 +24,13 @@ const Home: FC = () => {
         },
       ]}>
       <StatusBar
-        barStyle="default"
+        barStyle={appSettings.theme === 'light' ? 'dark-content' : 'light-content'}
         translucent={true}
         backgroundColor="rgba(0,0,0,0)"
       />
       <Text style={{color: appSettings.colors.text}}>
-        Home Screen1 Home Screen1Home Screen1 Home Screen1 Home Screen1Home
-        Screen1 Home Screen1 Home Screen1 v Home Screen1 Home Screen1 Home
-        Screen1 Home Screen1 Home Screen1 Home Screen1
+        Home Screen1 Home Screen1Home Screen1 Home Screen1 Home Screen1Home Screen1 Home Screen1 Home Screen1 v Home
+        Screen1 Home Screen1 Home Screen1 Home Screen1 Home Screen1 Home Screen1
       </Text>
     </View>
   );
