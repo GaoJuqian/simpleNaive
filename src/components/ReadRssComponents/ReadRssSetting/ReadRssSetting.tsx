@@ -3,14 +3,13 @@ import {FlatList, Image, Pressable, Text, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import AppHeader from '@components/commom/AppHeader/AppHeader';
-import {useRoute} from '@react-navigation/native';
 import {STORAGE_KEYS, storageGetData, storageSetData} from 'src/utils/storage';
 
 const noListImg = require('src/assets/commom/noList.png');
 
 const ReadRssSetting = () => {
   const appSettings = useAppSettings();
-  const route = useRoute();
+  // const route = useRoute();
   const [rssFeedsList, setRssFeedsList] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -63,7 +62,7 @@ const ReadRssSetting = () => {
           // 在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号。
           refreshing={isRefreshing}
           data={rssFeedsList}
-          renderItem={({item, index}) => (
+          renderItem={({item}: any) => (
             <Pressable
               onPress={() => null}
               android_ripple={{color: appSettings.colors.primary}}
@@ -75,12 +74,8 @@ const ReadRssSetting = () => {
                 paddingHorizontal: 20,
                 borderRadius: 6,
               })}>
-              <Text style={[{color: appSettings.colors.text}, styles.rssListItemContent_title]}>
-                {item.name}
-              </Text>
-              <Text style={[{color: appSettings.colors.text}, styles.rssListItemContent_title]}>
-                {item.url}
-              </Text>
+              <Text style={[{color: appSettings.colors.text}]}>{item.name}</Text>
+              <Text style={[{color: appSettings.colors.text}]}>{item.url}</Text>
             </Pressable>
           )}
           keyExtractor={(item, idx) => String(idx)}
