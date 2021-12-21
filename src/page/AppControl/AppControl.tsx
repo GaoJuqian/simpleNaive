@@ -19,7 +19,11 @@ const controlList = [
           style={({pressed}) => [
             styles.controlListItem,
             {
-              backgroundColor: pressed ? 'rgba(255,255,255, .2)' : appSettings.colors.card,
+              backgroundColor: pressed
+                ? appSettings.theme === 'light'
+                  ? 'rgba(0,0,0, .1)'
+                  : 'rgba(255,255,255, .6)'
+                : appSettings.colors.card,
             },
           ]}
           onPress={() => {

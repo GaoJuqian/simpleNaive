@@ -1,17 +1,18 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {FlatList, Image, Pressable, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import AppHeader from '@components/commom/AppHeader/AppHeader';
 import {STORAGE_KEYS, storageGetData, storageSetData} from 'src/utils/storage';
-
-const noListImg = require('src/assets/commom/noList.png');
+import AppList from '@components/commom/AppList/AppList';
+import AppCardPressAble from '@components/commom/AppCardPressAble/AppCardPressAble';
+import AppModal from '@components/commom/AppModal/AppModal';
 
 const ReadRssSetting = () => {
   const appSettings = useAppSettings();
   // const route = useRoute();
   const [rssFeedsList, setRssFeedsList] = useState([]);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
 
   useLayoutEffect(() => {
     (async () => {
@@ -28,11 +29,13 @@ const ReadRssSetting = () => {
   }, []);
 
   useLayoutEffect(() => {
-    (async () => {
-      const list = await storageGetData(`${STORAGE_KEYS.RSS_LIST}`);
-      setRssFeedsList(list);
-    })();
+    getList();
   }, []);
+
+  const getList = async () => {
+    const list = await storageGetData(`${STORAGE_KEYS.RSS_LIST}`);
+    setRssFeedsList(list);
+  };
 
   useEffect(() => {
     console.log(rssFeedsList);
@@ -53,49 +56,28 @@ const ReadRssSetting = () => {
           padding: 10,
           flex: 1,
         }}>
-        <FlatList
-          onRefresh={async () => {
-            setIsRefreshing(true);
-            // await getRssFunction();
-            setIsRefreshing(false);
-          }}
-          // 在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号。
-          refreshing={isRefreshing}
-          data={rssFeedsList}
-          renderItem={({item}: any) => (
-            <Pressable
-              onPress={() => null}
-              android_ripple={{color: appSettings.colors.primary}}
-              style={({pressed}) => ({
-                backgroundColor: pressed ? 'rgba(255,255,255, .2)' : appSettings.colors.card,
-                transform: pressed ? [{scale: 0.98}] : [{scale: 1}],
+        <AppList
+          appListData={rssFeedsList}
+          keyExtractor={(item, idx) => String(idx)}
+          renderItem={({item}) => (
+            <AppCardPressAble
+              style={{
                 marginVertical: 10,
                 paddingVertical: 10,
                 paddingHorizontal: 20,
                 borderRadius: 6,
-              })}>
-              <Text style={[{color: appSettings.colors.text}]}>{item.name}</Text>
-              <Text style={[{color: appSettings.colors.text}]}>{item.url}</Text>
-            </Pressable>
-          )}
-          keyExtractor={(item, idx) => String(idx)}
-          // 指定除data外的属性 渲染用
-          extraData={{}}
-          // 列表为空时渲染该组件。
-          ListEmptyComponent={() => (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: '50%',
-              }}>
-              <Image source={noListImg} />
-              <Text style={{color: appSettings.colors.text, marginTop: 10}}>暂无数据</Text>
-            </View>
+              }}
+              onPress={() => null}>
+              <>
+                <Text style={[{color: appSettings.colors.text}]}>{item.name}</Text>
+                <Text style={[{color: appSettings.colors.text}]}>{item.url}</Text>
+              </>
+            </AppCardPressAble>
           )}
         />
       </View>
+
+      <AppModal visible={modalVisible} />
     </View>
   );
 };
