@@ -13,11 +13,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     fontWeight: 'bold',
-    // paddingRight: 10,
     flex: 1,
   },
-  right: {
-    paddingRight: 10,
-  },
+  right: {},
 });
 export default styles;

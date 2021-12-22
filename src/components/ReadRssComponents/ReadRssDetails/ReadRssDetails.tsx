@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, useWindowDimensions, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
@@ -22,7 +22,7 @@ const ReadRssList = (props: IProps) => {
   const [source, setSource] = useState<any>(undefined);
   const {width} = useWindowDimensions();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       const link = props.route.params.url;
       setSource(link);
@@ -62,7 +62,11 @@ const ReadRssList = (props: IProps) => {
         // loading provide
         startInLoadingState={true}
         renderLoading={() => (
-          <ActivityIndicator style={{height: '100%', width: '100%'}} size="large" color={appSettings.colors.primary} />
+          <ActivityIndicator
+            style={{height: '100%', width: '100%'}}
+            size="large"
+            color={appSettings.colors.primary}
+          />
         )}
         // 用于控制Web内容是否缩放以适应视图，并使用户能够更改缩放。默认值为true。
         scalesPageToFit={false}

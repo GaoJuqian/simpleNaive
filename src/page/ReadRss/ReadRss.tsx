@@ -1,74 +1,92 @@
-import React, {FC} from 'react';
-import {ActivityIndicator, StatusBar, TouchableOpacity, View} from 'react-native';
+import React, {FC, useEffect, useState} from 'react';
+import {ActivityIndicator, StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import ReadRssList from '@components/ReadRssComponents/ReadRssList/ReadRssList';
+import {STORAGE_KEYS, storageGetData} from '../../utils/storage';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const mockrss = [
-  {
-    name: '阮一峰阮一峰阮一峰',
-    url: 'https://www.ruanyifeng.com/blog/atom.xml',
-  },
-  {name: 'ASDFGHJKL', url: 'https://coolshell.cn/feed'},
-  {name: 'gaojuqian', url: 'https://www.gaojuqian.com/index.php/feed/'},
-  {name: 'Movie-s', url: 'https://www.1895m.com/feed/'},
-];
+// const mockrss = [
+//   {
+//     name: '阮一峰阮一峰阮一峰',
+//     url: 'https://www.ruanyifeng.com/blog/atom.xml',
+//   },
+//   {name: 'ASDFGHJKL', url: 'https://coolshell.cn/feed'},
+//   {name: 'gaojuqian', url: 'https://www.gaojuqian.com/index.php/feed/'},
+//   {name: 'Movie-s', url: 'https://www.1895m.com/feed/'},
+// ];
 
 const TabList: FC = () => {
   const appSettings = useAppSettings();
 
+  const [rssTabList, setRssTabList] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const list = await storageGetData(`${STORAGE_KEYS.RSS_LIST}`);
+      setRssTabList(list || []);
+    })();
+  }, []);
+
   return (
     <>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          // 活动
-          tabBarActiveTintColor: appSettings.colors.primary,
-          // 非活动
-          tabBarInactiveTintColor: appSettings.colors.text,
-          tabBarStyle: {
-            backgroundColor: appSettings.colors.background,
-            elevation: 1,
-          },
-          // 单个选项卡项的样式对象。
-          tabBarItemStyle: {
-            backgroundColor: appSettings.colors.background,
-            flex: 1,
-          },
-          // 标签标签的样式对象。
-          tabBarLabelStyle: {
-            fontWeight: 'bold',
-          },
-          // 指示是否使制表符栏可滚动。
-          tabBarScrollEnabled: mockrss.length > 3 ? true : false,
-          tabBarIndicator: props => <TouchableOpacity {...props} />,
-          // 按压选项卡的不透明度（仅限iOS和Android < 5.0）。
-          tabBarPressOpacity: 0.5,
-          // 材料涟漪的颜色（仅限Android >= 5.0）。
-          tabBarPressColor: appSettings.colors.primary,
-          // 指示是否启用轻扫手势。
-          swipeEnabled: true,
-          lazy: true,
-          lazyPlaceholder: () => (
-            <View style={{flex: 1, backgroundColor: appSettings.colors.background}}>
-              <ActivityIndicator style={{flex: 1}} size="large" color={appSettings.colors.primary} />
-            </View>
-          ),
-        })}>
-        {mockrss.map((rssListItem, rssListIdx) => (
-          <Tab.Screen
-            name={rssListItem.name}
-            component={ReadRssList}
-            key={rssListIdx}
-            initialParams={{url: rssListItem.url}}
-          />
-        ))}
-      </Tab.Navigator>
+      {rssTabList.length > 0 ? (
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            // 活动
+            tabBarActiveTintColor: appSettings.colors.primary,
+            // 非活动
+            tabBarInactiveTintColor: appSettings.colors.text,
+            tabBarStyle: {
+              backgroundColor: appSettings.colors.background,
+              elevation: 1,
+            },
+            // 单个选项卡项的样式对象。
+            tabBarItemStyle: {
+              backgroundColor: appSettings.colors.background,
+              flex: 1,
+            },
+            // 标签标签的样式对象。
+            tabBarLabelStyle: {
+              fontWeight: 'bold',
+            },
+            // 指示是否使制表符栏可滚动。
+            tabBarScrollEnabled: rssTabList.length > 3 ? true : false,
+            tabBarIndicator: props => <TouchableOpacity {...props} />,
+            // 按压选项卡的不透明度（仅限iOS和Android < 5.0）。
+            tabBarPressOpacity: 0.5,
+            // 材料涟漪的颜色（仅限Android >= 5.0）。
+            tabBarPressColor: appSettings.colors.primary,
+            // 指示是否启用轻扫手势。
+            swipeEnabled: true,
+            lazy: true,
+            lazyPlaceholder: () => (
+              <View style={{flex: 1, backgroundColor: appSettings.colors.background}}>
+                <ActivityIndicator
+                  style={{flex: 1}}
+                  size="large"
+                  color={appSettings.colors.primary}
+                />
+              </View>
+            ),
+          })}>
+          {rssTabList?.map((rssListItem, rssListIdx) => (
+            <Tab.Screen
+              name={rssListItem.name}
+              component={ReadRssList}
+              key={rssListIdx}
+              initialParams={{url: rssListItem.url}}
+            />
+          ))}
+        </Tab.Navigator>
+      ) : (
+        <Text>暂无</Text>
+      )}
     </>
   );
 };
@@ -94,7 +112,10 @@ const ReadRss: FC = () => {
 
   return (
     <View
-      style={[styles.container, {paddingTop: appSettings.insets?.top, backgroundColor: appSettings.colors.background}]}>
+      style={[
+        styles.container,
+        {paddingTop: appSettings.insets?.top, backgroundColor: appSettings.colors.background},
+      ]}>
       <StatusBar
         barStyle={appSettings.theme === 'light' ? 'dark-content' : 'light-content'}
         translucent={true}

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Image, Platform, Pressable, Text, View} from 'react-native';
 
 import styles from './styles';
@@ -45,7 +45,7 @@ const ReadRssList = (props: IProps) => {
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getRssFunction();
   }, [props.route.params.url]);
 

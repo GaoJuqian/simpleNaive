@@ -6,11 +6,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // marginTop: 22,
-    backgroundColor: 'rgba(61,59,79, .6)',
+    // backgroundColor: 'rgba(61,59,79, .6)',
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 20,
@@ -25,11 +24,16 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
+  ButtonBox: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
   openButton: {
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 10,
     elevation: 2,
+    marginHorizontal: 20,
   },
   textStyle: {
     color: 'white',
