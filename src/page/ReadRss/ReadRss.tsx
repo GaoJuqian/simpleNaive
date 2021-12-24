@@ -75,7 +75,7 @@ const TabList: FC = () => {
               </View>
             ),
           })}>
-          {rssTabList?.map((rssListItem, rssListIdx) => (
+          {rssTabList?.map((rssListItem: {name: string; url: string}, rssListIdx) => (
             <Tab.Screen
               name={rssListItem.name}
               component={ReadRssList}

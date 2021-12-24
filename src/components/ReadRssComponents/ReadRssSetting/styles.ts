@@ -4,6 +4,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  rssListItem: {
+    marginVertical: 5,
+  },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',

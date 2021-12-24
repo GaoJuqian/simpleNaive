@@ -73,8 +73,12 @@ const ReadRssSetting = () => {
               }}
               onPress={() => null}>
               <>
-                <Text style={[{color: appSettings.colors.text}]}>{item.name}</Text>
-                <Text style={[{color: appSettings.colors.text}]}>{item.url}</Text>
+                <Text style={[styles.rssListItem, {color: appSettings.colors.text}]}>
+                  标签: {item.name}
+                </Text>
+                <Text style={[styles.rssListItem, {color: appSettings.colors.text}]}>
+                  URL: {item.url}
+                </Text>
               </>
             </AppCardPressAble>
           )}

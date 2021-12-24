@@ -34,12 +34,12 @@ function reducer(
         return {
           ...state,
           theme: String(action.payload),
-          // colors: {
-          //   primary: '#cd7a89',
-          //   text: '#3d3b4f',
-          //   background: '#f4f4f6',
-          //   card: '#ffffff',
-          // },
+          colors: {
+            primary: '#cd7a89',
+            text: '#3d3b4f',
+            background: '#f4f4f6',
+            card: '#ffffff',
+          },
           colors: {
             primary: '#cd7a89',
             text: '#f4f4f6',
