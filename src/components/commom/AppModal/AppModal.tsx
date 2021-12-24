@@ -1,7 +1,8 @@
 import React from 'react';
-import {Modal, Text, TouchableHighlight, View} from 'react-native';
+import {Modal, Text, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
+import AppCardPressAble from '@components/commom/AppCardPressAble/AppCardPressAble';
 
 interface IProps {
   children: React.ReactElement;
@@ -26,20 +27,22 @@ const AppModal = (props: IProps) => {
           <View style={[styles.modalView, {backgroundColor: appSettings.colors.card}]}>
             <View>{props.children}</View>
             <View style={styles.ButtonBox}>
-              <TouchableHighlight
+              <AppCardPressAble
                 style={{...styles.openButton, backgroundColor: appSettings.colors.primary}}
+                notAndroidRipple={true}
                 onPress={() => {
                   props.okFun();
                 }}>
                 <Text style={styles.textStyle}>确认</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
+              </AppCardPressAble>
+              <AppCardPressAble
                 style={{...styles.openButton, backgroundColor: appSettings.colors.card}}
+                notAndroidRipple={true}
                 onPress={() => {
                   props.closeFun();
                 }}>
-                <Text style={styles.textStyle}>取消</Text>
-              </TouchableHighlight>
+                <Text style={[styles.textStyle, {color: appSettings.colors.text}]}>取消</Text>
+              </AppCardPressAble>
             </View>
           </View>
         </View>

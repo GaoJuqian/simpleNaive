@@ -6,6 +6,7 @@ interface IProps {
   children: React.ReactElement;
   onPress: (event: GestureResponderEvent) => void;
   style?: StyleProp<ViewStyle>;
+  notAndroidRipple?: boolean;
 }
 const AppCardPressAble = (props: IProps) => {
   const appSettings = useAppSettings();
@@ -13,7 +14,9 @@ const AppCardPressAble = (props: IProps) => {
   return (
     <Pressable
       onPress={event => props.onPress(event)}
-      android_ripple={{color: appSettings.colors.primary}}
+      android_ripple={{
+        color: props.notAndroidRipple ? 'rgba(0,0,0,0)' : appSettings.colors.primary,
+      }}
       style={({pressed}) => ({
         backgroundColor: pressed
           ? appSettings.theme === 'light'

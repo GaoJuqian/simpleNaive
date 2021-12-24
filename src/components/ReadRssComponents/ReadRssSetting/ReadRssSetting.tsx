@@ -94,7 +94,7 @@ const ReadRssSetting = () => {
             <View style={styles.inputRow}>
               <Text style={{color: appSettings.colors.text}}>名称:</Text>
               <TextInput
-                style={[styles.inputStyle, {backgroundColor: appSettings.colors.text}]}
+                style={[styles.inputStyle, {backgroundColor: appSettings.colors.background}]}
                 onChangeText={name => setInputValue({...inputValue, name})}
                 value={inputValue.name}
                 placeholder={'输入订阅Tab的名称'}
@@ -107,7 +107,7 @@ const ReadRssSetting = () => {
           <View style={styles.inputRow}>
             <Text style={{color: appSettings.colors.text}}>URL:</Text>
             <TextInput
-              style={[styles.inputStyle, {backgroundColor: appSettings.colors.text}]}
+              style={[styles.inputStyle, {backgroundColor: appSettings.colors.background}]}
               onChangeText={url => setInputValue({...inputValue, url})}
               value={inputValue.url}
               placeholder={'输入订阅url链接'}

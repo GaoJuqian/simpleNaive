@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    borderRadius: 20,
+    borderRadius: 6,
     paddingHorizontal: 20,
     paddingVertical: 20,
     alignItems: 'center',
@@ -29,14 +29,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   openButton: {
-    borderRadius: 20,
+    borderRadius: 6,
     paddingHorizontal: 20,
     paddingVertical: 10,
     elevation: 2,
     marginHorizontal: 20,
   },
   textStyle: {
-    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },

@@ -40,12 +40,12 @@ function reducer(
             background: '#f4f4f6',
             card: '#ffffff',
           },
-          colors: {
-            primary: '#cd7a89',
-            text: '#f4f4f6',
-            background: '#000',
-            card: '#1c1c1c',
-          },
+          // colors: {
+          //   primary: '#cd7a89',
+          //   text: '#f4f4f6',
+          //   background: '#000',
+          //   card: '#1c1c1c',
+          // },
         };
       } else {
         return {
