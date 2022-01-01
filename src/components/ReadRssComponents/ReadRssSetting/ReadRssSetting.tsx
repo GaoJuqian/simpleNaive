@@ -38,7 +38,7 @@ const ReadRssSetting = () => {
   };
 
   useEffect(() => {
-    console.log(rssFeedsList);
+    // console.log(rssFeedsList);
   }, [rssFeedsList]);
 
   return (
@@ -92,12 +92,12 @@ const ReadRssSetting = () => {
         <View style={{width: 300}}>
           <View style={{width: 300}}>
             <View style={styles.inputRow}>
-              <Text style={{color: appSettings.colors.text}}>名称:</Text>
+              <Text style={{color: appSettings.colors.text}}>标签:</Text>
               <TextInput
                 style={[styles.inputStyle, {backgroundColor: appSettings.colors.background}]}
                 onChangeText={name => setInputValue({...inputValue, name})}
                 value={inputValue.name}
-                placeholder={'输入订阅Tab的名称'}
+                placeholder={'输入订阅Tab的标签'}
                 clearButtonMode={'while-editing'}
                 autoCorrect={false}
                 keyboardAppearance={appSettings.theme === 'light' ? 'light' : 'dark'}
@@ -105,12 +105,12 @@ const ReadRssSetting = () => {
             </View>
           </View>
           <View style={styles.inputRow}>
-            <Text style={{color: appSettings.colors.text}}>URL:</Text>
+            <Text style={{color: appSettings.colors.text}}>链接:</Text>
             <TextInput
               style={[styles.inputStyle, {backgroundColor: appSettings.colors.background}]}
               onChangeText={url => setInputValue({...inputValue, url})}
               value={inputValue.url}
-              placeholder={'输入订阅url链接'}
+              placeholder={'输入订阅https链接'}
               clearButtonMode={'while-editing'}
               autoCorrect={false}
               keyboardAppearance={appSettings.theme === 'light' ? 'light' : 'dark'}
