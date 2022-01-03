@@ -50,7 +50,7 @@ const ReadRssList = (props: IProps) => {
   }, [props.route.params.url]);
 
   useEffect(() => {
-    console.log(rssData);
+    // console.log(rssData);
   }, [rssData]);
 
   // TODO 优化

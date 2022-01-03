@@ -1,5 +1,5 @@
-import React, {FC, useEffect, useState} from 'react';
-import {ActivityIndicator, StatusBar, Text, TouchableOpacity, View} from 'react-native';
+import React, {FC, useState} from 'react';
+import {ActivityIndicator, Image, StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -7,6 +7,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import ReadRssList from '@components/ReadRssComponents/ReadRssList/ReadRssList';
 import {STORAGE_KEYS, storageGetData} from '../../utils/storage';
+import {useFocusEffect} from '@react-navigation/native';
+
+const noListImg = require('src/assets/commom/noList.png');
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -23,15 +26,14 @@ const Stack = createNativeStackNavigator();
 
 const TabList: FC = () => {
   const appSettings = useAppSettings();
-
   const [rssTabList, setRssTabList] = useState([]);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     (async () => {
       const list = await storageGetData(`${STORAGE_KEYS.RSS_LIST}`);
       setRssTabList(list || []);
     })();
-  }, []);
+  });
 
   return (
     <>
@@ -85,7 +87,10 @@ const TabList: FC = () => {
           ))}
         </Tab.Navigator>
       ) : (
-        <Text>暂无</Text>
+        <View style={styles.noList}>
+          <Image source={noListImg} />
+          <Text style={{color: appSettings.colors.text, marginTop: 10}}>暂无数据</Text>
+        </View>
       )}
     </>
   );

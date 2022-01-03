@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, useWindowDimensions, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import styles from './styles';
 import {useAppSettings} from '@components/SettingsProvider/SettingsProvider';
 import {WebView} from 'react-native-webview';
@@ -20,7 +20,6 @@ interface IProps {
 const ReadRssList = (props: IProps) => {
   const appSettings = useAppSettings();
   const [source, setSource] = useState<any>(undefined);
-  const {width} = useWindowDimensions();
 
   useEffect(() => {
     (async () => {
@@ -49,10 +48,10 @@ const ReadRssList = (props: IProps) => {
         source={{uri: source}}
         androidLayerType={'hardware'}
         onLoadStart={syntheticEvent => {
-          const {nativeEvent} = syntheticEvent;
+          // const {nativeEvent} = syntheticEvent;
         }}
         onLoad={syntheticEvent => {
-          const {nativeEvent} = syntheticEvent;
+          // const {nativeEvent} = syntheticEvent;
         }}
         onError={syntheticEvent => {
           const {nativeEvent} = syntheticEvent;

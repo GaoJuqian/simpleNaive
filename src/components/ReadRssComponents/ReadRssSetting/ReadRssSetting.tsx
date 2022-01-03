@@ -14,6 +14,11 @@ const ReadRssSetting = () => {
   // const route = useRoute();
   const [rssFeedsList, setRssFeedsList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [delModalVisible, setDelModalVisible] = useState(false);
+  const [delContent, setDelContent] = useState<{name: string; url: string; index: number} | null>(
+    null,
+  );
+
   const [inputValue, setInputValue] = useState({
     name: '',
     url: '',
@@ -25,20 +30,28 @@ const ReadRssSetting = () => {
 
   const getRssList = async () => {
     const list = await storageGetData(`${STORAGE_KEYS.RSS_LIST}`);
-    setRssFeedsList(list);
+    list && setRssFeedsList(list);
   };
 
   const setRssList = async () => {
     if (inputValue.name.length > 0 && inputValue.url.length > 0) {
       const data = [...rssFeedsList, inputValue];
       await storageSetData(`${STORAGE_KEYS.RSS_LIST}`, data);
+      setModalVisible(false);
+      setInputValue({name: '', url: ''});
+      await getRssList();
     } else {
       Alert.alert('请输入完整');
     }
   };
 
+  const openModal = (data: {name: string; url: string}, idx: number) => {
+    setDelContent({...data, index: idx});
+    setDelModalVisible(true);
+  };
+
   useEffect(() => {
-    // console.log(rssFeedsList);
+    console.log(rssFeedsList);
   }, [rssFeedsList]);
 
   return (
@@ -63,7 +76,7 @@ const ReadRssSetting = () => {
         <AppList
           appListData={rssFeedsList}
           keyExtractor={(item, idx) => String(idx)}
-          renderItem={({item}) => (
+          renderItem={({item, index}) => (
             <AppCardPressAble
               style={{
                 marginVertical: 10,
@@ -71,13 +84,15 @@ const ReadRssSetting = () => {
                 paddingHorizontal: 20,
                 borderRadius: 6,
               }}
-              onPress={() => null}>
+              onPress={() => {
+                openModal(item, index);
+              }}>
               <>
                 <Text style={[styles.rssListItem, {color: appSettings.colors.text}]}>
-                  标签: {item.name}
+                  标签: {item?.name}
                 </Text>
                 <Text style={[styles.rssListItem, {color: appSettings.colors.text}]}>
-                  URL: {item.url}
+                  URL: {item?.url}
                 </Text>
               </>
             </AppCardPressAble>
@@ -85,6 +100,7 @@ const ReadRssSetting = () => {
         />
       </View>
 
+      {/* 添加 */}
       <AppModal
         okFun={() => setRssList()}
         closeFun={() => setModalVisible(false)}
@@ -116,6 +132,23 @@ const ReadRssSetting = () => {
               keyboardAppearance={appSettings.theme === 'light' ? 'light' : 'dark'}
             />
           </View>
+        </View>
+      </AppModal>
+
+      {/* 删除 */}
+      <AppModal
+        okFun={async () => {
+          const data = rssFeedsList.filter((item, index) => index !== Number(delContent!.index));
+          await storageSetData(`${STORAGE_KEYS.RSS_LIST}`, data);
+          setDelModalVisible(false);
+          await getRssList();
+        }}
+        closeFun={() => setDelModalVisible(false)}
+        visible={delModalVisible}>
+        <View style={{width: 300}}>
+          <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
+            是否删除{delContent?.name || '无名称'}
+          </Text>
         </View>
       </AppModal>
     </View>
