@@ -67,6 +67,7 @@ const ReadRssList = (props: IProps) => {
       const {link} = data;
       console.log('link', link);
       if (link) {
+        // @ts-ignore
         navigation.navigate('TabListDetails', {url: link, title: rssData.title || '详情'});
       }
     },
